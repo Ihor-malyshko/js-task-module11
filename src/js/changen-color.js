@@ -20,19 +20,26 @@ const randomIntegerFromInterval = (min, max) => {
 let timerId = null;
 
 const startChanger = () => {
-  console.log('start');
-  timerId = setInterval(() => {
-    refs.container.style.backgroundColor =
-      colors[randomIntegerFromInterval(0, colors.length)];
-  }, 500);
+  timerId = setInterval(changeColor, 500);
+  refs.startButton.classList.add('is-disabled');
   refs.startButton.removeEventListener('click', startChanger);
 };
 
 const stopChanger = () => {
-  console.log('stop');
+  refs.startButton.classList.remove('is-disabled');
   refs.startButton.addEventListener('click', startChanger);
   clearInterval(timerId);
 };
 
 refs.startButton.addEventListener('click', startChanger);
 refs.stopButton.addEventListener('click', stopChanger);
+
+function changeColor() {
+  let oldcolor = refs.container.style.backgroundColor;
+  refs.container.style.backgroundColor =
+    colors[randomIntegerFromInterval(0, colors.length)];
+  while (oldcolor === refs.container.style.backgroundColor) {
+    refs.container.style.backgroundColor =
+      colors[randomIntegerFromInterval(0, colors.length)];
+  }
+}
